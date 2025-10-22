@@ -1,10 +1,11 @@
 package com.mercadolibre.camilo.model;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Seller {
     String id;
     String nickname;
@@ -12,8 +13,10 @@ public class Seller {
 
     Metrics metrics;
 
-    @Value
+    @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Metrics {
         double cancellations;
         double delays;

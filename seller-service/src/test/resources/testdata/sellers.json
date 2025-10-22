@@ -1,0 +1,4 @@
+[
+  {"id":"S-1","nickname":"TechStore","reputation":4.7,"metrics":{"cancellations":0.03,"delays":0.10}},
+  {"id":"S-2","nickname":"CasaGadgets","reputation":3.9,"metrics":{"cancellations":0.05,"delays":0.08}}
+]
