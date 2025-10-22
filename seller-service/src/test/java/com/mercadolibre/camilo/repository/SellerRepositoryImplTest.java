@@ -37,9 +37,6 @@ class SellerRepositoryImplTest {
         };
     }
 
-    // ------------------------------------------------------------
-    // Carga desde archivo real: src/test/resources/testdata/sellers.json
-    // ------------------------------------------------------------
     @Nested
     @DisplayName("Carga desde classpath (archivo real)")
     class LoadFromClasspath {
