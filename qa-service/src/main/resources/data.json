@@ -1,0 +1,34 @@
+[
+  {
+    "id": "Q-1",
+    "productId": "P-1001",
+    "author": "ana",
+    "text": "¿Viene con cargador?",
+    "createdAt": "2025-08-04T11:00:00Z",
+    "answers": [
+      {
+        "id": "A-1",
+        "questionId": "Q-1",
+        "author": "TechStore",
+        "text": "Sí, incluye cargador original.",
+        "createdAt": "2025-08-04T12:15:00Z"
+      }
+    ]
+  },
+  {
+    "id": "Q-2",
+    "productId": "P-1001",
+    "author": "juan",
+    "text": "¿Tiene garantía?",
+    "createdAt": "2025-08-05T08:20:00Z",
+    "answers": [
+      {
+        "id": "A-2",
+        "questionId": "Q-2",
+        "author": "TechStore",
+        "text": "Garantía de 12 meses con el fabricante.",
+        "createdAt": "2025-08-05T09:00:00Z"
+      }
+    ]
+  }
+]

@@ -1,0 +1,18 @@
+server:
+  port: 8082
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: category-service
+
+logging:
+  level:
+    root: INFO
+    com.mercadolibre.camilo.categories: DEBUG
+
+category:
+  seed-path: classpath:seed
+  file-name: categories.json
+  persist-path: file:./data/categories.json

@@ -1,0 +1,4 @@
+server:
+  port: 8080
+app:
+  data-path: ${DATA_PATH:classpath:data.json}

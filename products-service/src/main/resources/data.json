@@ -1,0 +1,35 @@
+[
+  {
+    "id": "P-1001",
+    "title": "Smartphone Nova X",
+    "price": 799.9,
+    "currency": "USD",
+    "thumbnail": "/img/p1001-main.png",
+    "pictures": ["/img/p1001-1.png", "/img/p1001-2.png"],
+    "sellerId": "S-50",
+    "categoryId": "MLA_CAT_SMARTPHONES",
+    "attributes": [
+      {"name":"color","value":"black"},
+      {"name":"storage","value":"128GB"}
+    ],
+    "condition": "NEW",
+    "description": "Pantalla OLED 6.5\", 5G, 128GB, 8GB RAM.",
+    "stock": 25,
+    "hasPromotion": true
+  },
+  {
+    "id": "P-1002",
+    "title": "Celular Básico Classic",
+    "price": 129.0,
+    "currency": "USD",
+    "thumbnail": "/img/p1002-main.png",
+    "pictures": [],
+    "sellerId": "S-77",
+    "categoryId": "MLA_CAT_FEATURE_PHONES",
+    "attributes": [{"name":"color","value":"blue"}],
+    "condition": "USED",
+    "description": "Batería de larga duración, radio FM.",
+    "stock": 80,
+    "hasPromotion": false
+  }
+]

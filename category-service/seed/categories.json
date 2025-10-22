@@ -1,0 +1,342 @@
+[
+  { "id": "MLA_CAT_ROOT", "name": "Todas las categorías", "parentId": null, "pathFromRoot": [], "childrenCount": 10 },
+
+  { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica", "parentId": "MLA_CAT_ROOT",
+    "pathFromRoot": [{ "id": "MLA_CAT_ROOT", "name": "Todas las categorías" }],
+    "childrenCount": 6
+  },
+  { "id": "MLA_CAT_PHONES", "name": "Celulares y Teléfonos", "parentId": "MLA_CAT_ELECTRONICS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" }
+    ],
+    "childrenCount": 3
+  },
+  { "id": "MLA_CAT_SMARTPHONES", "name": "Smartphones", "parentId": "MLA_CAT_PHONES",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_PHONES", "name": "Celulares y Teléfonos" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_FEATURE_PHONES", "name": "Celulares Básicos", "parentId": "MLA_CAT_PHONES",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_PHONES", "name": "Celulares y Teléfonos" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_PHONE_ACCESSORIES", "name": "Accesorios para Celulares", "parentId": "MLA_CAT_PHONES",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_PHONES", "name": "Celulares y Teléfonos" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_TV", "name": "TV y Video", "parentId": "MLA_CAT_ELECTRONICS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" }
+    ],
+    "childrenCount": 2
+  },
+  { "id": "MLA_CAT_TV_LEDS", "name": "Televisores", "parentId": "MLA_CAT_TV",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_TV", "name": "TV y Video" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_STREAMING", "name": "Reproductores Streaming", "parentId": "MLA_CAT_TV",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_TV", "name": "TV y Video" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_AUDIO", "name": "Audio", "parentId": "MLA_CAT_ELECTRONICS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" }
+    ],
+    "childrenCount": 3
+  },
+  { "id": "MLA_CAT_HEADPHONES", "name": "Auriculares", "parentId": "MLA_CAT_AUDIO",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_AUDIO", "name": "Audio" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_SPEAKERS", "name": "Parlantes", "parentId": "MLA_CAT_AUDIO",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_AUDIO", "name": "Audio" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_SOUND_SYSTEMS", "name": "Minicomponentes", "parentId": "MLA_CAT_AUDIO",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_AUDIO", "name": "Audio" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_COMPUTERS", "name": "Computación", "parentId": "MLA_CAT_ELECTRONICS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" }
+    ],
+    "childrenCount": 4
+  },
+  { "id": "MLA_CAT_LAPTOPS", "name": "Laptops", "parentId": "MLA_CAT_COMPUTERS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_COMPUTERS", "name": "Computación" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_DESKTOPS", "name": "PC de Escritorio", "parentId": "MLA_CAT_COMPUTERS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_COMPUTERS", "name": "Computación" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_COMPONENTS", "name": "Componentes", "parentId": "MLA_CAT_COMPUTERS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_COMPUTERS", "name": "Computación" }
+    ],
+    "childrenCount": 2
+  },
+  { "id": "MLA_CAT_STORAGE", "name": "Almacenamiento", "parentId": "MLA_CAT_COMPONENTS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_COMPUTERS", "name": "Computación" },
+      { "id": "MLA_CAT_COMPONENTS", "name": "Componentes" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_GPU", "name": "Tarjetas de Video", "parentId": "MLA_CAT_COMPONENTS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica" },
+      { "id": "MLA_CAT_COMPUTERS", "name": "Computación" },
+      { "id": "MLA_CAT_COMPONENTS", "name": "Componentes" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_HOME", "name": "Hogar y Muebles", "parentId": "MLA_CAT_ROOT",
+    "pathFromRoot": [{ "id": "MLA_CAT_ROOT", "name": "Todas las categorías" }],
+    "childrenCount": 5
+  },
+  { "id": "MLA_CAT_FURNITURE", "name": "Muebles", "parentId": "MLA_CAT_HOME",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_HOME", "name": "Hogar y Muebles" }
+    ],
+    "childrenCount": 2
+  },
+  { "id": "MLA_CAT_SOFAS", "name": "Sofás", "parentId": "MLA_CAT_FURNITURE",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_HOME", "name": "Hogar y Muebles" },
+      { "id": "MLA_CAT_FURNITURE", "name": "Muebles" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_TABLES", "name": "Mesas", "parentId": "MLA_CAT_FURNITURE",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_HOME", "name": "Hogar y Muebles" },
+      { "id": "MLA_CAT_FURNITURE", "name": "Muebles" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_KITCHEN", "name": "Cocina", "parentId": "MLA_CAT_HOME",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_HOME", "name": "Hogar y Muebles" }
+    ],
+    "childrenCount": 1
+  },
+  { "id": "MLA_CAT_COOKWARE", "name": "Baterías de Cocina", "parentId": "MLA_CAT_KITCHEN",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_HOME", "name": "Hogar y Muebles" },
+      { "id": "MLA_CAT_KITCHEN", "name": "Cocina" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_DECOR", "name": "Decoración", "parentId": "MLA_CAT_HOME",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_HOME", "name": "Hogar y Muebles" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_BEDROOM", "name": "Dormitorio", "parentId": "MLA_CAT_HOME",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_HOME", "name": "Hogar y Muebles" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_FASHION", "name": "Moda", "parentId": "MLA_CAT_ROOT",
+    "pathFromRoot": [{ "id": "MLA_CAT_ROOT", "name": "Todas las categorías" }],
+    "childrenCount": 3
+  },
+  { "id": "MLA_CAT_MEN", "name": "Hombre", "parentId": "MLA_CAT_FASHION",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_FASHION", "name": "Moda" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_WOMEN", "name": "Mujer", "parentId": "MLA_CAT_FASHION",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_FASHION", "name": "Moda" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_KIDS", "name": "Niños", "parentId": "MLA_CAT_FASHION",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_FASHION", "name": "Moda" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_SPORTS", "name": "Deportes y Fitness", "parentId": "MLA_CAT_ROOT",
+    "pathFromRoot": [{ "id": "MLA_CAT_ROOT", "name": "Todas las categorías" }],
+    "childrenCount": 3
+  },
+  { "id": "MLA_CAT_FITNESS", "name": "Fitness", "parentId": "MLA_CAT_SPORTS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_SPORTS", "name": "Deportes y Fitness" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_OUTDOOR", "name": "Aire Libre", "parentId": "MLA_CAT_SPORTS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_SPORTS", "name": "Deportes y Fitness" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_TEAM_SPORTS", "name": "Deportes de Equipo", "parentId": "MLA_CAT_SPORTS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_SPORTS", "name": "Deportes y Fitness" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_TOYS", "name": "Juguetes", "parentId": "MLA_CAT_ROOT",
+    "pathFromRoot": [{ "id": "MLA_CAT_ROOT", "name": "Todas las categorías" }],
+    "childrenCount": 2
+  },
+  { "id": "MLA_CAT_BOARD_GAMES", "name": "Juegos de Mesa", "parentId": "MLA_CAT_TOYS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_TOYS", "name": "Juguetes" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_DOLLS", "name": "Muñecas", "parentId": "MLA_CAT_TOYS",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_TOYS", "name": "Juguetes" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_BOOKS", "name": "Libros", "parentId": "MLA_CAT_ROOT",
+    "pathFromRoot": [{ "id": "MLA_CAT_ROOT", "name": "Todas las categorías" }],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_AUTOMOTIVE", "name": "Automotriz", "parentId": "MLA_CAT_ROOT",
+    "pathFromRoot": [{ "id": "MLA_CAT_ROOT", "name": "Todas las categorías" }],
+    "childrenCount": 2
+  },
+  { "id": "MLA_CAT_AUTO_PARTS", "name": "Repuestos", "parentId": "MLA_CAT_AUTOMOTIVE",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_AUTOMOTIVE", "name": "Automotriz" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_AUTO_ACCESSORIES", "name": "Accesorios", "parentId": "MLA_CAT_AUTOMOTIVE",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_AUTOMOTIVE", "name": "Automotriz" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_APPLIANCES", "name": "Electrodomésticos", "parentId": "MLA_CAT_ROOT",
+    "pathFromRoot": [{ "id": "MLA_CAT_ROOT", "name": "Todas las categorías" }],
+    "childrenCount": 3
+  },
+  { "id": "MLA_CAT_REFRIGERATORS", "name": "Refrigeración", "parentId": "MLA_CAT_APPLIANCES",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_APPLIANCES", "name": "Electrodomésticos" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_WASHERS", "name": "Lavado", "parentId": "MLA_CAT_APPLIANCES",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_APPLIANCES", "name": "Electrodomésticos" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_KITCHEN_APPLIANCES", "name": "Pequeños Electrodomésticos", "parentId": "MLA_CAT_APPLIANCES",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_APPLIANCES", "name": "Electrodomésticos" }
+    ],
+    "childrenCount": 0
+  },
+
+  { "id": "MLA_CAT_GAMING", "name": "Consolas y Videojuegos", "parentId": "MLA_CAT_ROOT",
+    "pathFromRoot": [{ "id": "MLA_CAT_ROOT", "name": "Todas las categorías" }],
+    "childrenCount": 2
+  },
+  { "id": "MLA_CAT_CONSOLES", "name": "Consolas", "parentId": "MLA_CAT_GAMING",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_GAMING", "name": "Consolas y Videojuegos" }
+    ],
+    "childrenCount": 0
+  },
+  { "id": "MLA_CAT_GAMES", "name": "Videojuegos", "parentId": "MLA_CAT_GAMING",
+    "pathFromRoot": [
+      { "id": "MLA_CAT_ROOT", "name": "Todas las categorías" },
+      { "id": "MLA_CAT_GAMING", "name": "Consolas y Videojuegos" }
+    ],
+    "childrenCount": 0
+  }
+]

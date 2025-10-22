@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+environment:
+  serviceName: search-service
+  maxPayloadSizeInMb: 8
+  securityDisableSslCertValidation: false
+  logInvalidRequests: true
+  swaggerContext: /swagger-ui
+  headersForLogging: [ "x-request-id", "x-user-id" ]
+
+  http:
+    timeoutMs: 3000
+
+  serviceRetry:
+    maxAttempts: 2
+
+  domains:
+    productsBaseUrl: ${PRODUCTS_BASE_URL:http://products:8080}
+    categoriesBaseUrl: ${CATEGORIES_BASE_URL:http://categories:8080}
+    sellersBaseUrl: ${SELLERS_BASE_URL:http://sellers:8080}
+    reviewsBaseUrl: ${REVIEWS_BASE_URL:http://reviews:8080}
+    qaBaseUrl: ${QA_BASE_URL:http://qa:8080}

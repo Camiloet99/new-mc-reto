@@ -1,0 +1,8 @@
+[
+  { "id":"R-1","productId":"P-1001","rating":5,"title":"Excelente","text":"Muy bueno",
+    "createdAt":"2025-08-01T10:00:00Z","author":"david_e" },
+  { "id":"R-2","productId":"P-1001","rating":4,"title":"Bien","text":"Cumple",
+    "createdAt":"2025-08-02T09:30:00Z","author":"vale_r" },
+  { "id":"R-3","productId":"P-1002","rating":3,"title":"Ok","text":"Lo esperado",
+    "createdAt":"2025-08-03T12:00:00Z","author":"camilo" }
+]

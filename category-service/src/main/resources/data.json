@@ -1,0 +1,7 @@
+[
+  { "id": "MLA_CAT_ROOT", "name": "Todas las categorías", "parentId": null },
+  { "id": "MLA_CAT_ELECTRONICS", "name": "Electrónica", "parentId": "MLA_CAT_ROOT" },
+  { "id": "MLA_CAT_PHONES", "name": "Celulares y Teléfonos", "parentId": "MLA_CAT_ELECTRONICS" },
+  { "id": "MLA_CAT_SMARTPHONES", "name": "Smartphones", "parentId": "MLA_CAT_PHONES" },
+  { "id": "MLA_CAT_FEATURE_PHONES", "name": "Celulares Básicos", "parentId": "MLA_CAT_PHONES" }
+]
