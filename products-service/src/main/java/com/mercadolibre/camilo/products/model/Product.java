@@ -1,13 +1,14 @@
 package com.mercadolibre.camilo.products.model;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Value
+@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
     String id;
     String title;

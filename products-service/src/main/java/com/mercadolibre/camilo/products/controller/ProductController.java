@@ -1,7 +1,7 @@
 package com.mercadolibre.camilo.products.controller;
 
 import com.mercadolibre.camilo.products.dto.ProductResponse;
-import com.mercadolibre.camilo.products.service.ProductService;
+import com.mercadolibre.camilo.products.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping(path = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
 
-    private final ProductService service;
+    private final ProductServiceImpl service;
 
     /**
      * Lista productos aplicando filtros opcionales:

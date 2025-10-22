@@ -1,5 +1,6 @@
 package com.mercadolibre.camilo.products.dto;
 
+import com.mercadolibre.camilo.products.model.Attribute;
 import com.mercadolibre.camilo.products.model.Product;
 import lombok.Builder;
 import lombok.Singular;

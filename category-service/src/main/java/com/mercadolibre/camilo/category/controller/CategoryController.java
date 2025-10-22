@@ -2,7 +2,7 @@ package com.mercadolibre.camilo.category.controller;
 
 import com.mercadolibre.camilo.category.dto.BreadcrumbNode;
 import com.mercadolibre.camilo.category.dto.CategoryResponse;
-import com.mercadolibre.camilo.category.service.CategoryService;
+import com.mercadolibre.camilo.category.service.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping(path = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoryController {
 
-    private final CategoryService service;
+    private final CategoryServiceImpl service;
 
     /**
      * Obtiene todas las categorías o, si se especifica {@code parentId}, únicamente
