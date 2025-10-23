@@ -1,8 +1,56 @@
 [
-  { "id":"R-1","productId":"P-1001","rating":5,"title":"Excelente","text":"Muy bueno",
-    "createdAt":"2025-08-01T10:00:00Z","author":"david_e" },
-  { "id":"R-2","productId":"P-1001","rating":4,"title":"Bien","text":"Cumple",
-    "createdAt":"2025-08-02T09:30:00Z","author":"vale_r" },
-  { "id":"R-3","productId":"P-1002","rating":3,"title":"Ok","text":"Lo esperado",
-    "createdAt":"2025-08-03T12:00:00Z","author":"camilo" }
+  {
+    "id": "R-1",
+    "productId": "P-1001",
+    "rating": 5,
+    "title": "Excelente compra",
+    "text": "El Nova X funciona rapidísimo, la pantalla es hermosa.",
+    "createdAt": "2025-08-01T10:00:00Z",
+    "author": "david_e"
+  },
+  {
+    "id": "R-2",
+    "productId": "P-1001",
+    "rating": 4,
+    "title": "Cumple lo prometido",
+    "text": "Buen rendimiento, aunque esperaba más batería.",
+    "createdAt": "2025-08-02T09:30:00Z",
+    "author": "vale_r"
+  },
+  {
+    "id": "R-3",
+    "productId": "P-1006",
+    "rating": 5,
+    "title": "El mejor Samsung",
+    "text": "La cámara del S23 Ultra es una locura. Vale cada peso.",
+    "createdAt": "2025-08-03T12:00:00Z",
+    "author": "camilo"
+  },
+  {
+    "id": "R-4",
+    "productId": "P-1011",
+    "rating": 5,
+    "title": "iPhone top",
+    "text": "El 14 Pro va como un cohete. Dynamic Island es útil.",
+    "createdAt": "2025-08-05T08:45:00Z",
+    "author": "mariana"
+  },
+  {
+    "id": "R-5",
+    "productId": "P-1015",
+    "rating": 4,
+    "title": "Gran pantalla",
+    "text": "Muy buena relación calidad-precio. AMOLED impecable.",
+    "createdAt": "2025-08-07T10:20:00Z",
+    "author": "felipe"
+  },
+  {
+    "id": "R-6",
+    "productId": "P-1019",
+    "rating": 3,
+    "title": "Buen equipo pero caro",
+    "text": "El Xperia 1 V es excelente, pero el precio es alto.",
+    "createdAt": "2025-08-09T14:40:00Z",
+    "author": "andres"
+  }
 ]

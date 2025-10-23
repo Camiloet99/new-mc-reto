@@ -7,7 +7,7 @@ import lombok.Value;
 import org.mercadolibre.camilo.search.dto.ItemBasicResponse;
 import org.mercadolibre.camilo.search.service.facade.seller.model.SellerResponse;
 import org.mercadolibre.camilo.search.service.facade.qa.model.QaResponse;
-import org.mercadolibre.camilo.search.service.facade.reviews.model.ReviewSummaryResponse;
+import org.mercadolibre.camilo.search.service.facade.reviews.model.ReviewResponse;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ItemEnrichedResponse {
     SellerResponse seller;
 
     @Schema(description = "Resumen de reseñas y calificaciones del producto")
-    ReviewSummaryResponse reviews;
+    List<ReviewResponse> reviews;
 
     @Schema(description = "Resumen de reseñas y calificaciones del producto")
     @Singular("qaItem")

@@ -26,4 +26,20 @@ public interface ProductService {
      * @return flujo reactivo con los resultados
      */
     Flux<ProductResponse> findAll(String categoryId, String sellerId, String q);
+
+    /**
+     * Fuzzy search por título. Ordenado desc por score.
+     *
+     * @param query texto de búsqueda (obligatorio, min 2)
+     * @param limit máximo de resultados (opcional, por defecto 20, tope 100)
+     */
+    Flux<ProductResponse> searchFuzzy(String query, Integer limit);
+
+    /**
+     * Autocomplete fuzzy de títulos. Ordenado por relevancia desc, títulos únicos.
+     * @param query texto a buscar (obligatorio, min 2)
+     * @param limit máximo de títulos (opcional, default 10, tope 50)
+     */
+    Flux<String> autocompleteTitles(String query, Integer limit);
+
 }

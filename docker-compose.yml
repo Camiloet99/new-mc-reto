@@ -1,0 +1,74 @@
+services:
+  categories:
+    container_name: categories
+    build:
+      context: ./category-service
+    environment:
+      SERVER_PORT: 8080
+    ports:
+      - "8081:8080"
+
+  products:
+    container_name: products
+    build:
+      context: ./products-service
+    environment:
+      SERVER_PORT: 8080
+    ports:
+      - "8082:8080"
+
+  sellers:
+    container_name: sellers
+    build:
+      context: ./seller-service
+    environment:
+      SERVER_PORT: 8080
+    ports:
+      - "8083:8080"
+
+  reviews:
+    container_name: reviews
+    build:
+      context: ./reviews-service
+    environment:
+      SERVER_PORT: 8080
+    ports:
+      - "8084:8080"
+
+  qa:
+    container_name: qa
+    build:
+      context: ./qa-service
+    environment:
+      SERVER_PORT: 8080
+    ports:
+      - "8085:8080"
+
+  search:
+    container_name: search
+    build:
+      context: ./search-service
+    environment:
+      SERVER_PORT: 8080
+      PRODUCTS_BASE_URL: http://products:8080
+      CATEGORIES_BASE_URL: http://categories:8080
+      SELLERS_BASE_URL: http://sellers:8080
+      REVIEWS_BASE_URL: http://reviews:8080
+      QA_BASE_URL: http://qa:8080
+
+      # Desactivar proxies heredados y excluir servicios internos de la red de Docker
+      HTTP_PROXY: ""
+      http_proxy: ""
+      HTTPS_PROXY: ""
+      https_proxy: ""
+      NO_PROXY: "localhost,127.0.0.1,::1,products,categories,sellers,reviews,qa"
+      no_proxy: "localhost,127.0.0.1,::1,products,categories,sellers,reviews,qa"
+
+    ports:
+      - "8080:8080"
+    depends_on:
+      - categories
+      - products
+      - sellers
+      - reviews
+      - qa

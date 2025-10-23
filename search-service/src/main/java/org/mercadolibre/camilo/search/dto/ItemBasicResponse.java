@@ -38,7 +38,6 @@ public class ItemBasicResponse {
     @Schema(description = "Indica si el producto tiene promoción activa")
     Boolean hasPromotion;
 
-
     @Schema(description = "Atributos descriptivos del producto (color, tamaño, material, etc.)")
     @Singular("attribute")
     List<ProductResponse.Attribute> attributes;

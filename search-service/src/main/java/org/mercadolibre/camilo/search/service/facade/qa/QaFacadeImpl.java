@@ -1,6 +1,7 @@
 package org.mercadolibre.camilo.search.service.facade.qa;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.mercadolibre.camilo.search.config.EnvironmentConfig;
 import org.mercadolibre.camilo.search.service.facade.QaFacade;
 import org.mercadolibre.camilo.search.service.facade.qa.model.QaResponse;
@@ -17,11 +18,12 @@ import reactor.util.retry.Retry;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class QaFacadeImpl implements QaFacade {
 
-    private static final String LIST = "/qa";
+    private static final String LIST = "/qa?productId=%s";
 
     private final WebClient webClient;
     private final EnvironmentConfig env;
@@ -31,7 +33,7 @@ public class QaFacadeImpl implements QaFacade {
         final String resourceUri = base + LIST;
 
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder.path(resourceUri).queryParam("productId", productId).build())
+                .uri(String.format(resourceUri, productId))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToMono(resp -> WebClientSupport.mapResponse(
                         resp, QaResponse[].class,
@@ -39,6 +41,7 @@ public class QaFacadeImpl implements QaFacade {
                         ctx -> new QaInvalidRequestException(resourceUri, ctx.headers(), ctx.body()),
                         ctx -> new QaUpstreamFailureException(ctx.status(), resourceUri, ctx.headers(), ctx.body())
                 )).map(Arrays::asList)
+                .doOnError(e -> log.error("Call to {} failed: {}", env.getDomains().getQaBaseUrl(), e.getMessage(), e))
                 .retryWhen(Retry
                         .max(env.getServiceRetry().getMaxAttempts())
                         .filter(QaUpstreamFailureException.class::isInstance)

@@ -1,6 +1,7 @@
 package org.mercadolibre.camilo.search.service.facade.categories;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.mercadolibre.camilo.search.config.EnvironmentConfig;
 import org.mercadolibre.camilo.search.service.facade.CategoriesFacade;
 import org.mercadolibre.camilo.search.service.facade.categories.model.CategoryResponse;
@@ -16,28 +17,35 @@ import reactor.util.retry.Retry;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CategoriesFacadeImpl implements CategoriesFacade {
 
-    private static final String BREADCRUMB = "/categories/{id}/breadcrumb";
     private final WebClient webClient;
     private final EnvironmentConfig env;
 
+    private static final String BREADCRUMB_TMPL = "/categories/{id}/breadcrumb";
+
+    @Override
     public Mono<List<CategoryResponse.BreadcrumbNode>> breadcrumb(String categoryId) {
-        final String base = env.getDomains().getCategoriesBaseUrl().replaceAll("/$", "");
-        final String resourceUri = base + BREADCRUMB;
+        final String id = Objects.requireNonNull(categoryId, "categoryId must not be null").trim();
+        final String base = env.getDomains().getCategoriesBaseUrl();
+        final String urlTmpl = base.replaceAll("/$", "") + BREADCRUMB_TMPL;
 
         return webClient.get()
-                .uri(resourceUri, categoryId)
+                .uri(urlTmpl, id)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToMono(resp -> WebClientSupport.mapResponse(
                         resp, CategoryResponse.BreadcrumbNode[].class,
-                        ctx -> new CategoriesNotFoundException(resourceUri, ctx.headers(), ctx.body()),
-                        ctx -> new CategoriesInvalidRequestException(resourceUri, ctx.headers(), ctx.body()),
-                        ctx -> new CategoriesUpstreamFailureException(ctx.status(), resourceUri, ctx.headers(), ctx.body())
-                )).map(Arrays::asList)
+                        ctx -> new CategoriesNotFoundException(urlTmpl, ctx.headers(), ctx.body()),
+                        ctx -> new CategoriesInvalidRequestException(urlTmpl, ctx.headers(), ctx.body()),
+                        ctx -> new CategoriesUpstreamFailureException(ctx.status(), urlTmpl, ctx.headers(), ctx.body())
+                ))
+                .map(Arrays::asList)
+                .doOnError(e -> log.error("Categories.breadcrumb failed url={} msg={}", urlTmpl.replace("{id}", id), e.getMessage(), e))
                 .retryWhen(Retry
                         .max(env.getServiceRetry().getMaxAttempts())
                         .filter(CategoriesUpstreamFailureException.class::isInstance)

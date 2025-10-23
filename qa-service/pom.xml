@@ -43,7 +43,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.mercadolibre.camilo.QaServiceApplication</mainClass>
+                            <mainClass>org.mercadolibre.camilo.qa.QaServiceApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

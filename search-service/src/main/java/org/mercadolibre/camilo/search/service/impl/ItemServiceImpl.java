@@ -4,15 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.mercadolibre.camilo.search.dto.ItemBasicResponse;
 import org.mercadolibre.camilo.search.dto.enriched.ItemEnrichedResponse;
 import org.mercadolibre.camilo.search.service.ItemService;
+import org.mercadolibre.camilo.search.service.facade.*;
 import org.mercadolibre.camilo.search.service.facade.qa.model.QaResponse;
-import org.mercadolibre.camilo.search.service.facade.reviews.model.ReviewSummaryResponse;
+import org.mercadolibre.camilo.search.service.facade.reviews.model.ReviewResponse;
 import org.mercadolibre.camilo.search.service.facade.categories.model.CategoryResponse;
 import org.mercadolibre.camilo.search.service.facade.seller.model.SellerResponse;
-import org.mercadolibre.camilo.search.service.facade.categories.CategoriesFacadeImpl;
-import org.mercadolibre.camilo.search.service.facade.products.ProductsFacadeImpl;
-import org.mercadolibre.camilo.search.service.facade.qa.QaFacadeImpl;
-import org.mercadolibre.camilo.search.service.facade.reviews.ReviewsFacadeImpl;
-import org.mercadolibre.camilo.search.service.facade.seller.SellersFacadeImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -22,11 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    private final ProductsFacadeImpl products;
-    private final CategoriesFacadeImpl categories;
-    private final SellersFacadeImpl sellers;
-    private final ReviewsFacadeImpl reviews;
-    private final QaFacadeImpl qa;
+    private final ProductsFacade products;
+    private final CategoriesFacade categories;
+    private final SellersFacade sellers;
+    private final ReviewsFacade reviews;
+    private final QaFacade qa;
 
     public Mono<ItemBasicResponse> basic(String productId) {
         return products.getById(productId).flatMap(prod ->
@@ -40,12 +36,12 @@ public class ItemServiceImpl implements ItemService {
                 Mono.zip(
                         categories.breadcrumb(prod.getCategoryId()),
                         sellers.getById(prod.getSellerId()),
-                        reviews.summary(productId),
+                        reviews.list(productId),
                         qa.listByProduct(productId)
                 ).map(t -> {
                     List<CategoryResponse.BreadcrumbNode> breadcrumb = t.getT1();
                     SellerResponse seller = t.getT2();
-                    ReviewSummaryResponse reviewSummary = t.getT3();
+                    List<ReviewResponse> reviewSummary = t.getT3();
                     List<QaResponse> qaList = t.getT4();
 
                     ItemBasicResponse basic = ItemBasicResponse.from(prod, breadcrumb);

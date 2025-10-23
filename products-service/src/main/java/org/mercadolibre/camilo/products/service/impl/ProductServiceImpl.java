@@ -4,6 +4,7 @@ import org.mercadolibre.camilo.products.dto.ProductResponse;
 import org.mercadolibre.camilo.products.exception.InvalidRequestException;
 import org.mercadolibre.camilo.products.exception.ProductNotFoundException;
 import org.mercadolibre.camilo.products.model.Product;
+import org.mercadolibre.camilo.products.model.Scored;
 import org.mercadolibre.camilo.products.repository.impl.ProductRepositoryImpl;
 import org.mercadolibre.camilo.products.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import reactor.core.publisher.Mono;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Predicate;
+
+import static org.mercadolibre.camilo.products.util.FuzzyUtils.score;
 
 @Slf4j
 @Service
@@ -84,6 +87,77 @@ public class ProductServiceImpl implements ProductService {
                 .doOnNext(r -> log.trace("ProductService.findAll | hit | id={} title={}", r.getId(), r.getTitle()))
                 .doOnComplete(() -> log.debug("ProductService.findAll | completed"))
                 .doOnError(ex -> log.error("ProductService.findAll | error | type={} | msg={}",
+                        ex.getClass().getSimpleName(), ex.getMessage()));
+    }
+
+    @Override
+    public Flux<ProductResponse> searchFuzzy(String query, Integer limit) {
+        final String normalizedQuery = normalize(query);
+        if (normalizedQuery == null || normalizedQuery.isBlank()) {
+            log.warn("ProductService.searchFuzzy | invalid query (blank)");
+            return Flux.error(new InvalidRequestException("query must not be blank"));
+        }
+        if (normalizedQuery.length() < 2) {
+            return Flux.error(new InvalidRequestException("query must have at least 2 characters"));
+        }
+        final int max = limit == null ? 20 : Math.max(1, Math.min(limit, 100));
+        final double threshold = 0.35;
+
+        log.info("ProductService.searchFuzzy | normalizedQuery='{}' limit={}", normalizedQuery, max);
+
+        return Flux.fromIterable(repo.findAll())
+                .map(p -> {
+                    double score = score(normalizedQuery, p.getTitle());
+                    return new Scored<>(p, score);
+                })
+                .filter(s -> s.score() >= threshold)
+                .sort((a, b) -> Double.compare(b.score(), a.score()))
+                .take(max)
+                .map(s -> {
+                    log.trace("ProductService.searchFuzzy | hit id={} title='{}' score={}",
+                            s.value().getId(), s.value().getTitle(), String.format("%.3f", s.score()));
+                    return ProductResponse.from(s.value());
+                })
+                .doOnComplete(() -> log.debug("ProductService.searchFuzzy | completed"))
+                .doOnError(ex -> log.error("ProductService.searchFuzzy | error | type={} | msg={}",
+                        ex.getClass().getSimpleName(), ex.getMessage()));
+    }
+
+    @Override
+    public Flux<String> autocompleteTitles(String query, Integer limit) {
+        final String q = normalize(query);
+        if (q == null || q.isBlank()) {
+            log.warn("ProductService.autocompleteTitles | invalid query (blank)");
+            return Flux.error(new InvalidRequestException("query must not be blank"));
+        }
+        if (q.length() < 2) {
+            return Flux.error(new InvalidRequestException("query must have at least 2 characters"));
+        }
+
+        final int max = limit == null ? 10 : Math.max(1, Math.min(limit, 50));
+        final double threshold = 0.30;
+
+        log.info("ProductService.autocompleteTitles | q='{}' limit={}", q, max);
+
+        return Flux.fromIterable(repo.findAll())
+                .map(p -> {
+                    String title = p.getTitle();
+                    double base = score(q, title);
+                    String normTitle = title == null ? "" : title.toLowerCase(Locale.ROOT).trim();
+                    double boost = (normTitle.startsWith(q)) ? 0.15 : 0.0;
+                    return new Scored<>(title, Math.min(1.0, base + boost));
+                })
+                .filter(s -> s.value() != null && s.score() >= threshold)
+                .sort((a, b) -> {
+                    int cmp = Double.compare(b.score(), a.score());
+                    return (cmp != 0) ? cmp : a.value().compareToIgnoreCase(b.value());
+                })
+                .map(Scored::value)
+                .distinct(t -> t.toLowerCase(Locale.ROOT))
+                .take(max)
+                .doOnNext(t -> log.trace("ProductService.autocompleteTitles | hit title='{}'", t))
+                .doOnComplete(() -> log.debug("ProductService.autocompleteTitles | completed"))
+                .doOnError(ex -> log.error("ProductService.autocompleteTitles | error | type={} | msg={}",
                         ex.getClass().getSimpleName(), ex.getMessage()));
     }
 

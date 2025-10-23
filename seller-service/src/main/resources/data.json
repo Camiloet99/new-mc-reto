@@ -27,17 +27,26 @@
     }
   },
   {
-    "id": "S-02",
-    "nickname": "MegaOfertas",
-    "reputation": 4.1,
+    "id": "S-21",
+    "nickname": "NokiaHouse",
+    "reputation": 4.2,
     "metrics": {
       "cancellations": 0.04,
+      "delays": 0.06
+    }
+  },
+  {
+    "id": "S-30",
+    "nickname": "MotoHub",
+    "reputation": 4.3,
+    "metrics": {
+      "cancellations": 0.03,
       "delays": 0.07
     }
   },
   {
-    "id": "S-03",
-    "nickname": "DigitalWorld",
+    "id": "S-99",
+    "nickname": "AppleWorld",
     "reputation": 4.8,
     "metrics": {
       "cancellations": 0.01,
@@ -45,63 +54,36 @@
     }
   },
   {
-    "id": "S-04",
-    "nickname": "OutletTech",
-    "reputation": 3.6,
-    "metrics": {
-      "cancellations": 0.06,
-      "delays": 0.12
-    }
-  },
-  {
-    "id": "S-05",
-    "nickname": "Bytes&Bits",
-    "reputation": 4.3,
+    "id": "S-88",
+    "nickname": "MiMarket",
+    "reputation": 4.4,
     "metrics": {
       "cancellations": 0.03,
       "delays": 0.09
     }
   },
   {
-    "id": "S-06",
-    "nickname": "GigaMarket",
-    "reputation": 4.0,
+    "id": "S-66",
+    "nickname": "HuaweiCenter",
+    "reputation": 4.1,
     "metrics": {
       "cancellations": 0.05,
-      "delays": 0.11
-    }
-  },
-  {
-    "id": "S-07",
-    "nickname": "TechHogar",
-    "reputation": 4.2,
-    "metrics": {
-      "cancellations": 0.03,
       "delays": 0.07
     }
   },
   {
-    "id": "S-08",
-    "nickname": "PixelShop",
-    "reputation": 4.6,
+    "id": "S-42",
+    "nickname": "SonyPro",
+    "reputation": 4.0,
     "metrics": {
-      "cancellations": 0.02,
-      "delays": 0.04
-    }
-  },
-  {
-    "id": "S-09",
-    "nickname": "NovaElectronica",
-    "reputation": 3.8,
-    "metrics": {
-      "cancellations": 0.06,
+      "cancellations": 0.05,
       "delays": 0.10
     }
   },
   {
-    "id": "S-10",
-    "nickname": "SmartBuy",
-    "reputation": 4.4,
+    "id": "S-54",
+    "nickname": "AndesMobile",
+    "reputation": 4.2,
     "metrics": {
       "cancellations": 0.03,
       "delays": 0.06
@@ -109,272 +91,11 @@
   },
   {
     "id": "S-11",
-    "nickname": "TecnoHouse",
-    "reputation": 3.7,
-    "metrics": {
-      "cancellations": 0.07,
-      "delays": 0.09
-    }
-  },
-  {
-    "id": "S-12",
-    "nickname": "UrbanGadgets",
-    "reputation": 4.9,
-    "metrics": {
-      "cancellations": 0.01,
-      "delays": 0.03
-    }
-  },
-  {
-    "id": "S-13",
-    "nickname": "Mercatech",
-    "reputation": 3.5,
-    "metrics": {
-      "cancellations": 0.08,
-      "delays": 0.13
-    }
-  },
-  {
-    "id": "S-14",
-    "nickname": "FutureHub",
-    "reputation": 4.0,
-    "metrics": {
-      "cancellations": 0.05,
-      "delays": 0.08
-    }
-  },
-  {
-    "id": "S-15",
-    "nickname": "TecnoExpress",
-    "reputation": 4.2,
-    "metrics": {
-      "cancellations": 0.03,
-      "delays": 0.05
-    }
-  },
-  {
-    "id": "S-16",
-    "nickname": "AndesDigital",
-    "reputation": 3.9,
-    "metrics": {
-      "cancellations": 0.05,
-      "delays": 0.09
-    }
-  },
-  {
-    "id": "S-17",
-    "nickname": "ConectadosYA",
-    "reputation": 3.4,
-    "metrics": {
-      "cancellations": 0.09,
-      "delays": 0.14
-    }
-  },
-  {
-    "id": "S-18",
-    "nickname": "TopComponentes",
-    "reputation": 4.7,
-    "metrics": {
-      "cancellations": 0.02,
-      "delays": 0.05
-    }
-  },
-  {
-    "id": "S-19",
-    "nickname": "Click&Tech",
-    "reputation": 4.1,
-    "metrics": {
-      "cancellations": 0.04,
-      "delays": 0.06
-    }
-  },
-  {
-    "id": "S-20",
-    "nickname": "ZonaElectro",
+    "nickname": "LGPrime",
     "reputation": 3.8,
     "metrics": {
       "cancellations": 0.06,
-      "delays": 0.11
-    }
-  },
-  {
-    "id": "S-21",
-    "nickname": "TecnoPlanet",
-    "reputation": 4.3,
-    "metrics": {
-      "cancellations": 0.03,
-      "delays": 0.07
-    }
-  },
-  {
-    "id": "S-22",
-    "nickname": "GizmoStore",
-    "reputation": 4.6,
-    "metrics": {
-      "cancellations": 0.02,
-      "delays": 0.04
-    }
-  },
-  {
-    "id": "S-23",
-    "nickname": "ChipCity",
-    "reputation": 3.7,
-    "metrics": {
-      "cancellations": 0.07,
-      "delays": 0.10
-    }
-  },
-  {
-    "id": "S-24",
-    "nickname": "MercadoDigital",
-    "reputation": 4.0,
-    "metrics": {
-      "cancellations": 0.05,
-      "delays": 0.09
-    }
-  },
-  {
-    "id": "S-25",
-    "nickname": "ElectroAndino",
-    "reputation": 4.4,
-    "metrics": {
-      "cancellations": 0.03,
-      "delays": 0.05
-    }
-  },
-  {
-    "id": "S-26",
-    "nickname": "RápidoTech",
-    "reputation": 3.6,
-    "metrics": {
-      "cancellations": 0.08,
       "delays": 0.12
-    }
-  },
-  {
-    "id": "S-27",
-    "nickname": "BitBazaar",
-    "reputation": 4.2,
-    "metrics": {
-      "cancellations": 0.03,
-      "delays": 0.06
-    }
-  },
-  {
-    "id": "S-28",
-    "nickname": "FullHardware",
-    "reputation": 4.8,
-    "metrics": {
-      "cancellations": 0.01,
-      "delays": 0.03
-    }
-  },
-  {
-    "id": "S-29",
-    "nickname": "TecnoRoute",
-    "reputation": 3.9,
-    "metrics": {
-      "cancellations": 0.05,
-      "delays": 0.10
-    }
-  },
-  {
-    "id": "S-30",
-    "nickname": "ElectroCity",
-    "reputation": 4.5,
-    "metrics": {
-      "cancellations": 0.02,
-      "delays": 0.06
-    }
-  },
-  {
-    "id": "S-31",
-    "nickname": "NordicTech",
-    "reputation": 3.8,
-    "metrics": {
-      "cancellations": 0.06,
-      "delays": 0.09
-    }
-  },
-  {
-    "id": "S-32",
-    "nickname": "AndinaMobile",
-    "reputation": 4.1,
-    "metrics": {
-      "cancellations": 0.04,
-      "delays": 0.07
-    }
-  },
-  {
-    "id": "S-33",
-    "nickname": "LatamDevices",
-    "reputation": 3.5,
-    "metrics": {
-      "cancellations": 0.09,
-      "delays": 0.15
-    }
-  },
-  {
-    "id": "S-34",
-    "nickname": "PrimeGadgets",
-    "reputation": 4.7,
-    "metrics": {
-      "cancellations": 0.02,
-      "delays": 0.04
-    }
-  },
-  {
-    "id": "S-35",
-    "nickname": "TecnoOutlet",
-    "reputation": 3.7,
-    "metrics": {
-      "cancellations": 0.07,
-      "delays": 0.12
-    }
-  },
-  {
-    "id": "S-36",
-    "nickname": "ByteMarket",
-    "reputation": 4.3,
-    "metrics": {
-      "cancellations": 0.03,
-      "delays": 0.05
-    }
-  },
-  {
-    "id": "S-37",
-    "nickname": "ElectroPunto",
-    "reputation": 3.9,
-    "metrics": {
-      "cancellations": 0.05,
-      "delays": 0.08
-    }
-  },
-  {
-    "id": "S-38",
-    "nickname": "DigitalPlanet",
-    "reputation": 4.6,
-    "metrics": {
-      "cancellations": 0.02,
-      "delays": 0.05
-    }
-  },
-  {
-    "id": "S-39",
-    "nickname": "TecnoLínea",
-    "reputation": 3.6,
-    "metrics": {
-      "cancellations": 0.08,
-      "delays": 0.11
-    }
-  },
-  {
-    "id": "S-40",
-    "nickname": "SmartOutlet",
-    "reputation": 4.2,
-    "metrics": {
-      "cancellations": 0.03,
-      "delays": 0.06
     }
   }
 ]

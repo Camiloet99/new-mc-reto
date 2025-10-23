@@ -18,51 +18,34 @@ import java.util.List;
 public class EnvironmentConfig {
 
     @NotBlank
-    private String marker;
-
-    @NotBlank
     private String serviceName;
 
-    @NotBlank
-    private String shipCode;
-
-    @Min(1)
-    @Max(128)
-    private int maxPayloadSizeInMb = 8;
+    private int maxPayloadSizeInMb;
 
     @NotNull
-    private Boolean securityDisableSslCertValidation = false;
+    private Boolean securityDisableSslCertValidation;
 
     @NotNull
-    private Boolean logInvalidRequests = true;
-
-    @NotBlank
-    private String swaggerContext = "/swagger-ui";
-
-    @NotNull
-    @Size(min = 0)
-    private List<@NotBlank String> headersForLogging;
+    private Boolean logInvalidRequests;
 
     @Valid
     @NotNull
-    private ServiceRetry serviceRetry = new ServiceRetry();
+    private ServiceRetry serviceRetry;
 
     @Valid
     @NotNull
-    private Domains domains = new Domains();
+    private Domains domains;
 
     @Valid
     @NotNull
-    private Http http = new Http();
+    private Http http;
 
     @Getter
     @Setter
     @Validated
     public static class ServiceRetry {
         @NotNull
-        @Min(1)
-        @Max(5)
-        private Integer maxAttempts = 2;
+        private Integer maxAttempts;
     }
 
     @Getter
@@ -88,6 +71,6 @@ public class EnvironmentConfig {
         @NotNull
         @Min(500)
         @Max(60000)
-        private Long timeoutMs = 3000L;
+        private Long timeoutMs;
     }
 }
