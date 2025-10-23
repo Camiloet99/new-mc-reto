@@ -29,10 +29,6 @@ public class ReviewsFacadeImpl implements ReviewsFacade {
     private final WebClient webClient;
     private final EnvironmentConfig env;
 
-    /**
-     * Devuelve el stream de reseñas del producto (list endpoint).
-     * Usa URL ABSOLUTA (opción 3) para evitar URIs relativas.
-     */
     public Mono<List<ReviewResponse>> list(String productId) {
         final String pid = Objects.requireNonNull(productId, "productId must not be null").trim();
         final String base = env.getDomains().getReviewsBaseUrl().replaceAll("/$", "");

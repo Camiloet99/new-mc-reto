@@ -1,11 +1,13 @@
 package org.mercadolibre.camilo.search.service.facade.products.model;
 
+import lombok.Builder;
 import lombok.Value;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Value
+@Builder
 public class ProductResponse {
     String id;
     String title;
@@ -22,6 +24,7 @@ public class ProductResponse {
     Boolean hasPromotion;
 
     @Value
+    @Builder
     public static class Attribute {
         String name;
         String value;

@@ -8,9 +8,6 @@ public class ErrorCodes {
     private static final String PREFIX = "SS-01-";
 
     public static final String UNKNOWN_ERROR = PREFIX + "000";
-    public static final String INVALID_REQUEST = PREFIX + "001";
-    public static final String UPSTREAM_SERVICE_FAILURE = PREFIX + "002";
-    public static final String ASYNC_REQUEST_TIMEOUT_ERROR = PREFIX + "003";
 
     public static final String PRODUCTS_INVALID_REQUEST = PREFIX + "100";
     public static final String PRODUCTS_NOT_FOUND = PREFIX + "101";

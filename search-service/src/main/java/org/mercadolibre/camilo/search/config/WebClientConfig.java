@@ -1,6 +1,5 @@
 package org.mercadolibre.camilo.search.config;
 
-
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;

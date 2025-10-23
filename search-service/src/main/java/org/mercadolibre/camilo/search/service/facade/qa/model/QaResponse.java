@@ -1,10 +1,12 @@
 package org.mercadolibre.camilo.search.service.facade.qa.model;
 
+import lombok.Builder;
 import lombok.Value;
 
 import java.util.List;
 
 @Value
+@Builder
 public class QaResponse {
     String id;
     String productId;
@@ -14,6 +16,7 @@ public class QaResponse {
     List<AnswerDTO> answers;
 
     @Value
+    @Builder
     public static class AnswerDTO {
         String id;
         String questionId;
