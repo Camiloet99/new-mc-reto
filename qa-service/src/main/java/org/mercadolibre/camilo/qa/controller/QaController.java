@@ -25,30 +25,16 @@ public class QaController {
 
     private final QaService service;
 
-    @Operation(
-            summary = "Lista las preguntas y respuestas de un producto",
-            description = "Devuelve un flujo con las preguntas y sus respuestas asociadas a un producto específico."
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "Listado de preguntas (puede venir vacío)",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = QuestionResponse.class)))
-    )
-    @ApiResponse(
-            responseCode = "400",
-            description = "Petición inválida",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "404",
-            description = "Producto no encontrado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
+    @Operation(summary = "Lista las preguntas y respuestas de un producto",
+            description = "Devuelve un flujo con las preguntas y sus respuestas asociadas a un producto específico.")
+    @ApiResponse(responseCode = "200", description = "Listado de preguntas (puede venir vacío)",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = QuestionResponse.class))))
+    @ApiResponse(responseCode = "400", description = "Petición inválida",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Producto no encontrado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
     public ResponseEntity<Flux<QuestionResponse>> list(
             @Parameter(description = "Identificador del producto", required = true)
@@ -57,30 +43,16 @@ public class QaController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body);
     }
 
-    @Operation(
-            summary = "Obtiene una pregunta específica",
-            description = "Devuelve una pregunta junto con sus respuestas, si existen."
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "Pregunta encontrada",
-            content = @Content(schema = @Schema(implementation = QuestionResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "404",
-            description = "Pregunta no encontrada",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "400",
-            description = "Petición inválida",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
+    @Operation(summary = "Obtiene una pregunta específica",
+            description = "Devuelve una pregunta junto con sus respuestas, si existen.")
+    @ApiResponse(responseCode = "200", description = "Pregunta encontrada",
+            content = @Content(schema = @Schema(implementation = QuestionResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Pregunta no encontrada",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Petición inválida",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/{questionId}")
     public Mono<ResponseEntity<QuestionResponse>> get(
             @Parameter(description = "Identificador de la pregunta", required = true)

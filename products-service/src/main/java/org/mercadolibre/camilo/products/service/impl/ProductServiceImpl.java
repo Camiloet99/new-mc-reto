@@ -1,5 +1,6 @@
 package org.mercadolibre.camilo.products.service.impl;
 
+import org.mercadolibre.camilo.products.dto.PageResponse;
 import org.mercadolibre.camilo.products.dto.ProductResponse;
 import org.mercadolibre.camilo.products.exception.InvalidRequestException;
 import org.mercadolibre.camilo.products.exception.ProductNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -46,48 +48,6 @@ public class ProductServiceImpl implements ProductService {
                 .doOnError(ex ->
                         log.error("ProductService.get | error | id={} | type={} | msg={}",
                                 id, ex.getClass().getSimpleName(), ex.getMessage()));
-    }
-
-    @Override
-    public Flux<ProductResponse> findAll(String categoryId, String sellerId, String q) {
-        final String cat = normalize(categoryId);
-        final String sel = normalize(sellerId);
-        final String needle = normalize(q);
-        log.info("ProductService.findAll | filters | categoryId='{}' sellerId='{}' q='{}'", cat, sel, needle);
-
-        if (cat != null && cat.isBlank()) {
-            return Flux.error(new InvalidRequestException("categoryId must not be blank if provided"));
-        }
-        if (sel != null && sel.isBlank()) {
-            return Flux.error(new InvalidRequestException("sellerId must not be blank if provided"));
-        }
-        if (needle != null && needle.length() < 2) {
-            return Flux.error(new InvalidRequestException("q must have at least 2 characters"));
-        }
-
-        Predicate<Product> pred = p -> true;
-
-        if (cat != null) {
-            pred = pred.and(p -> Objects.equals(cat, p.getCategoryId()));
-        }
-        if (sel != null) {
-            pred = pred.and(p -> Objects.equals(sel, p.getSellerId()));
-        }
-        if (needle != null) {
-            pred = pred.and(p -> {
-                String title = p.getTitle();
-                return title != null && title.toLowerCase(Locale.ROOT).contains(needle);
-            });
-        }
-
-        return Flux.fromIterable(repo.findAll())
-                .filter(pred)
-                .map(ProductResponse::from)
-                .doOnSubscribe(s -> log.debug("ProductService.findAll | querying repository"))
-                .doOnNext(r -> log.trace("ProductService.findAll | hit | id={} title={}", r.getId(), r.getTitle()))
-                .doOnComplete(() -> log.debug("ProductService.findAll | completed"))
-                .doOnError(ex -> log.error("ProductService.findAll | error | type={} | msg={}",
-                        ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
     @Override
@@ -161,9 +121,116 @@ public class ProductServiceImpl implements ProductService {
                         ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
-    private String normalize(String s) {
-        if (s == null) return null;
-        String t = s.trim();
-        return t.isEmpty() ? "" : t;
+    @Override
+    public Mono<PageResponse<ProductResponse>> findAllPaged(
+            String categoryId,
+            String sellerId,
+            String query,
+            Integer pageNumber,
+            Integer pageSize) {
+
+        final String normalizedCategoryId = normalize(categoryId);
+        final String normalizedSellerId = normalize(sellerId);
+        final String normalizedQuery = normalize(query);
+
+        log.info("ProductService.findAllPaged | filters | categoryId='{}' sellerId='{}' q='{}' page={} size={}",
+                normalizedCategoryId, normalizedSellerId, normalizedQuery, pageNumber, pageSize);
+
+        if (normalizedCategoryId != null && normalizedCategoryId.isBlank()) {
+            return Mono.error(new InvalidRequestException("categoryId must not be blank if provided"));
+        }
+        if (normalizedSellerId != null && normalizedSellerId.isBlank()) {
+            return Mono.error(new InvalidRequestException("sellerId must not be blank if provided"));
+        }
+        if (normalizedQuery != null && normalizedQuery.length() < 2) {
+            return Mono.error(new InvalidRequestException("q must have at least 2 characters"));
+        }
+
+        Predicate<Product> filterPredicate = product -> true;
+
+        if (normalizedCategoryId != null) {
+            filterPredicate = filterPredicate.and(product ->
+                    Objects.equals(normalizedCategoryId, product.getCategoryId()));
+        }
+
+        if (normalizedSellerId != null) {
+            filterPredicate = filterPredicate.and(product ->
+                    Objects.equals(normalizedSellerId, product.getSellerId()));
+        }
+
+        if (normalizedQuery != null) {
+            filterPredicate = filterPredicate.and(product -> {
+                String title = product.getTitle();
+                return title != null && title.toLowerCase(Locale.ROOT).contains(normalizedQuery);
+            });
+        }
+
+        final boolean paginationRequested = (pageNumber != null) || (pageSize != null);
+        final int currentPage = (pageNumber == null || pageNumber < 0) ? 0 : pageNumber;
+        final int elementsPerPage = (pageSize == null || pageSize <= 0) ? 5 : pageSize;
+
+        return Flux.fromIterable(repo.findAll())
+                .filter(filterPredicate)
+                .map(ProductResponse::from)
+                .collectList()
+                .map(filteredProducts -> {
+                    final long totalItems = filteredProducts.size();
+
+                    if (!paginationRequested) {
+                        return PageResponse.<ProductResponse>builder()
+                                .page(0)
+                                .size((int) totalItems)
+                                .totalItems(totalItems)
+                                .totalPages(1)
+                                .hasPrev(false)
+                                .hasNext(false)
+                                .items(filteredProducts)
+                                .build();
+                    }
+
+                    long startIndex = (long) currentPage * elementsPerPage;
+                    if (startIndex >= totalItems && totalItems > 0) {
+                        int lastPageIndex = (int) ((totalItems - 1) / elementsPerPage);
+                        return buildPageResponse(filteredProducts, lastPageIndex, elementsPerPage, totalItems);
+                    }
+
+                    return buildPageResponse(filteredProducts, currentPage, elementsPerPage, totalItems);
+                })
+                .doOnSuccess(page -> log.debug("ProductService.findAllPaged | page={} size={} total={}",
+                        page.getPage(), page.getSize(), page.getTotalItems()))
+                .doOnError(error -> log.error("ProductService.findAllPaged | error | type={} | msg={}",
+                        error.getClass().getSimpleName(), error.getMessage()));
+    }
+
+    private PageResponse<ProductResponse> buildPageResponse(
+            List<ProductResponse> allProducts,
+            int currentPage,
+            int elementsPerPage,
+            long totalItems) {
+
+        int startIndex = Math.toIntExact(Math.min((long) currentPage * elementsPerPage, totalItems));
+        int endIndex = Math.toIntExact(Math.min(startIndex + (long) elementsPerPage, totalItems));
+        List<ProductResponse> pageItems = allProducts.subList(startIndex, endIndex);
+
+        int totalPages = totalItems == 0 ? 0 : (int) Math.ceil((double) totalItems / elementsPerPage);
+        boolean hasPreviousPage = currentPage > 0 && totalItems > 0;
+        boolean hasNextPage = (currentPage + 1) < totalPages;
+
+        return PageResponse.<ProductResponse>builder()
+                .page(currentPage)
+                .size(elementsPerPage)
+                .totalItems(totalItems)
+                .totalPages(totalPages)
+                .hasPrev(hasPreviousPage)
+                .hasNext(hasNextPage)
+                .items(pageItems)
+                .build();
+    }
+
+
+    private String normalize(String string) {
+        if (string == null) return null;
+        String trimmed = string.trim();
+        return trimmed.isEmpty() ? "" : trimmed;
     }
 }

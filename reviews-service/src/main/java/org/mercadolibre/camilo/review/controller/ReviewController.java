@@ -29,30 +29,16 @@ public class ReviewController {
 
     private final ReviewService service;
 
-    @Operation(
-            summary = "Lista las reseñas de un producto",
-            description = "Devuelve un flujo (puede ser vacío) de reseñas asociadas al productId proporcionado."
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "Listado de reseñas (puede ser vacío)",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ReviewResponse.class)))
-    )
-    @ApiResponse(
-            responseCode = "400",
-            description = "Petición inválida",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "404",
-            description = "Producto no encontrado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
+    @Operation(summary = "Lista las reseñas de un producto",
+            description = "Devuelve un flujo (puede ser vacío) de reseñas asociadas al productId proporcionado.")
+    @ApiResponse(responseCode = "200", description = "Listado de reseñas (puede ser vacío)",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ReviewResponse.class))))
+    @ApiResponse(responseCode = "400", description = "Petición inválida",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Producto no encontrado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
     public ResponseEntity<Flux<ReviewResponse>> list(
             @Parameter(description = "Identificador del producto", required = true)
@@ -61,30 +47,16 @@ public class ReviewController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body);
     }
 
-    @Operation(
-            summary = "Devuelve el resumen de reseñas de un producto",
-            description = "Incluye promedio simple, cantidad total e histograma 1..5 (rating -> cantidad)."
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "Resumen de reseñas generado correctamente",
-            content = @Content(schema = @Schema(implementation = ReviewSummaryResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "400",
-            description = "Petición inválida",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "404",
-            description = "Producto no encontrado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
+    @Operation(summary = "Devuelve el resumen de reseñas de un producto",
+            description = "Incluye promedio simple, cantidad total e histograma 1..5 (rating -> cantidad).")
+    @ApiResponse(responseCode = "200", description = "Resumen de reseñas generado correctamente",
+            content = @Content(schema = @Schema(implementation = ReviewSummaryResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Petición inválida",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Producto no encontrado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/summary")
     public Mono<ResponseEntity<ReviewSummaryResponse>> summary(
             @Parameter(description = "Identificador del producto", required = true)

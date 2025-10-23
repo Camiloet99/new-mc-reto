@@ -28,20 +28,12 @@ public class SellerController {
 
     private final SellerService service;
 
-    @Operation(
-            summary = "Lista todos los vendedores disponibles",
-            description = "Devuelve un flujo (puede ser vacío) con los vendedores registrados."
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "Listado de vendedores (puede ser vacío)",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = SellerResponse.class)))
-    )
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
+    @Operation(summary = "Lista todos los vendedores disponibles",
+            description = "Devuelve un flujo (puede ser vacío) con los vendedores registrados.")
+    @ApiResponse(responseCode = "200", description = "Listado de vendedores (puede ser vacío)",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = SellerResponse.class))))
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
     public ResponseEntity<Flux<SellerResponse>> getAll() {
         Flux<SellerResponse> body = service.findAll();
@@ -50,30 +42,16 @@ public class SellerController {
                 .body(body);
     }
 
-    @Operation(
-            summary = "Obtiene un vendedor por ID",
-            description = "Devuelve la información del vendedor si existe."
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "Vendedor encontrado",
-            content = @Content(schema = @Schema(implementation = SellerResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "404",
-            description = "Vendedor no encontrado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "400",
-            description = "Petición inválida",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-    )
+    @Operation(summary = "Obtiene un vendedor por ID",
+            description = "Devuelve la información del vendedor si existe.")
+    @ApiResponse(responseCode = "200", description = "Vendedor encontrado",
+            content = @Content(schema = @Schema(implementation = SellerResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Vendedor no encontrado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Petición inválida",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/{id}")
     public Mono<ResponseEntity<SellerResponse>> get(
             @Parameter(description = "Identificador del vendedor", required = true)

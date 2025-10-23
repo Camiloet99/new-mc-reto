@@ -54,7 +54,6 @@ public class ReviewServiceImpl implements ReviewService {
                     double avg = count == 0 ? 0.0 :
                             list.stream().collect(Collectors.averagingInt(Review::getRating));
 
-                    // Histograma 1..5 preservando orden
                     Map<Integer, Long> histogram = IntStream.rangeClosed(1, 5)
                             .boxed()
                             .collect(Collectors.toMap(

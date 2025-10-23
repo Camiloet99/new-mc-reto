@@ -1,5 +1,6 @@
 package org.mercadolibre.camilo.products.service;
 
+import org.mercadolibre.camilo.products.dto.PageResponse;
 import org.mercadolibre.camilo.products.dto.ProductResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,14 +19,16 @@ public interface ProductService {
     Mono<ProductResponse> get(String id);
 
     /**
-     * Busca productos con filtros opcionales.
+     * Busca productos con filtros opcionales en paginación.
      *
      * @param categoryId id de categoría (opcional)
      * @param sellerId   id de vendedor (opcional)
-     * @param q          texto de búsqueda aplicado al título (opcional)
+     * @param query          texto de búsqueda aplicado al título (opcional)
      * @return flujo reactivo con los resultados
      */
-    Flux<ProductResponse> findAll(String categoryId, String sellerId, String q);
+    Mono<PageResponse<ProductResponse>> findAllPaged(String categoryId, String sellerId,
+                                                     String query, Integer pageNumber, Integer pageSize);
+
 
     /**
      * Fuzzy search por título. Ordenado desc por score.
@@ -37,6 +40,7 @@ public interface ProductService {
 
     /**
      * Autocomplete fuzzy de títulos. Ordenado por relevancia desc, títulos únicos.
+     *
      * @param query texto a buscar (obligatorio, min 2)
      * @param limit máximo de títulos (opcional, default 10, tope 50)
      */

@@ -208,4 +208,123 @@ class ItemServiceImplTest {
             verifyNoInteractions(categories, sellers, reviews, qa);
         }
     }
+
+    @Nested
+    @DisplayName("enrichedPage(categoryId,sellerId,q,page,elements)")
+    class EnrichedPage {
+
+        private ProductResponse product(String id, String category, String seller, String title) {
+            return ProductResponse.builder()
+                    .id(id)
+                    .pictures(Collections.emptyList())
+                    .attributes(Collections.emptyList())
+                    .condition("new")
+                    .hasPromotion(false)
+                    .price(BigDecimal.valueOf(10.0))
+                    .currency("USD")
+                    .stock(5)
+                    .thumbnail("http://example.com/" + id + ".jpg")
+                    .categoryId(category)
+                    .sellerId(seller)
+                    .title(title)
+                    .build();
+        }
+
+        @Test
+        @DisplayName("retorna página enriquecida con un elemento (happy path)")
+        void enrichedPage_single_ok() {
+            ProductResponse p1 = product("P1", "C1", "S1", "Prod 1");
+            when(products.getAll(null, null, "term", 0, 1)).thenReturn(Mono.just(
+                    org.mercadolibre.camilo.search.dto.PageResponse.<ProductResponse>builder()
+                            .page(0).size(1).totalItems(1).totalPages(1).hasPrev(false).hasNext(false)
+                            .item(p1)
+                            .build()
+            ));
+            when(categories.breadcrumb("C1")).thenReturn(Mono.just(List.of()));
+            when(sellers.getById("S1")).thenReturn(Mono.just(SellerResponse.builder().id("S1").nickname("Seller 1").build()));
+            when(reviews.list("P1")).thenReturn(Mono.just(List.of(ReviewResponse.builder().id("r1").productId("P1").rating(5).createdAt(Instant.now().toString()).build())));
+            when(qa.listByProduct("P1")).thenReturn(Mono.just(List.of(QaResponse.builder().id("q1").productId("P1").text("hola").author("U").build())));
+
+            StepVerifier.create(service.enrichedPage(null, null, "term", 0, 1))
+                    .expectNextMatches(page -> page.getItems().size() == 1 && page.getTotalItems() == 1 && page.getItems().get(0).getBasic().getId().equals("P1"))
+                    .verifyComplete();
+
+            verify(products).getAll(null, null, "term", 0, 1);
+            verify(categories).breadcrumb("C1");
+            verify(sellers).getById("S1");
+            verify(reviews).list("P1");
+            verify(qa).listByProduct("P1");
+            verifyNoMoreInteractions(products, categories, sellers, reviews, qa);
+        }
+
+        @Test
+        @DisplayName("múltiples productos: algunos enriquecen OK y otros usan fallbacks por errores")
+        void enrichedPage_multiple_with_fallbacks() {
+            ProductResponse ok = product("P10", "C10", "S10", "OK");
+            ProductResponse fail = product("P11", "C11", "S11", "FAIL");
+            when(products.getAll("cat", null, null, 1, 2)).thenReturn(Mono.just(
+                    org.mercadolibre.camilo.search.dto.PageResponse.<ProductResponse>builder()
+                            .page(1).size(2).totalItems(2).totalPages(1).hasPrev(true).hasNext(false)
+                            .item(ok).item(fail)
+                            .build()
+            ));
+            when(categories.breadcrumb("C10")).thenReturn(Mono.just(List.of(CategoryResponse.BreadcrumbNode.builder().id("root").name("Root").build())));
+            when(sellers.getById("S10")).thenReturn(Mono.just(SellerResponse.builder().id("S10").nickname("Seller10").build()));
+            when(reviews.list("P10")).thenReturn(Mono.just(List.of()));
+            when(qa.listByProduct("P10")).thenReturn(Mono.just(List.of()));
+            when(categories.breadcrumb("C11")).thenReturn(Mono.error(new RuntimeException("cat fail")));
+            when(sellers.getById("S11")).thenReturn(Mono.error(new RuntimeException("seller fail")));
+            when(reviews.list("P11")).thenReturn(Mono.error(new RuntimeException("reviews fail")));
+            when(qa.listByProduct("P11")).thenReturn(Mono.error(new RuntimeException("qa fail")));
+
+            StepVerifier.create(service.enrichedPage("cat", null, null, 1, 2))
+                    .expectNextMatches(page -> {
+                        return page.getItems().size() == 2 &&
+                                page.getItems().stream().anyMatch(e -> e.getBasic().getId().equals("P10") && e.getSeller().getId().equals("S10")) &&
+                                page.getItems().stream().anyMatch(e -> e.getBasic().getId().equals("P11") && e.getSeller().getId() == null && e.getReviews().isEmpty());
+                    })
+                    .verifyComplete();
+
+            verify(products).getAll("cat", null, null, 1, 2);
+            verify(categories).breadcrumb("C10");
+            verify(categories).breadcrumb("C11");
+            verify(sellers).getById("S10");
+            verify(sellers).getById("S11");
+            verify(reviews).list("P10");
+            verify(reviews).list("P11");
+            verify(qa).listByProduct("P10");
+            verify(qa).listByProduct("P11");
+            verifyNoMoreInteractions(products, categories, sellers, reviews, qa);
+        }
+
+        @Test
+        @DisplayName("propaga error si falla products.getAll")
+        void enrichedPage_products_getAll_error() {
+            when(products.getAll(any(), any(), any(), any(), any())).thenReturn(Mono.error(new IllegalStateException("getAll fail")));
+
+            StepVerifier.create(service.enrichedPage("c", "s", "q", 0, 10))
+                    .expectError(IllegalStateException.class)
+                    .verify();
+
+            verify(products).getAll("c", "s", "q", 0, 10);
+            verifyNoInteractions(categories, sellers, reviews, qa);
+        }
+
+        @Test
+        @DisplayName("página vacía -> items vacíos sin llamadas a dependencias de enriquecimiento")
+        void enrichedPage_empty_items() {
+            when(products.getAll(null, null, null, 0, 0)).thenReturn(Mono.just(
+                    org.mercadolibre.camilo.search.dto.PageResponse.<ProductResponse>builder()
+                            .page(0).size(0).totalItems(0).totalPages(0).hasPrev(false).hasNext(false)
+                            .build()
+            ));
+
+            StepVerifier.create(service.enrichedPage(null, null, null, 0, 0))
+                    .expectNextMatches(page -> page.getItems().isEmpty() && page.getTotalItems() == 0)
+                    .verifyComplete();
+
+            verify(products).getAll(null, null, null, 0, 0);
+            verifyNoInteractions(categories, sellers, reviews, qa);
+        }
+    }
 }

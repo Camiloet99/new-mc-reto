@@ -78,17 +78,17 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     private static Map<String, List<Category>> unmodifiableChildren(Map<String, List<Category>> src) {
         Map<String, List<Category>> out = new HashMap<>(src.size());
-        for (Map.Entry<String, List<Category>> e : src.entrySet()) {
-            out.put(e.getKey(), Collections.unmodifiableList(new ArrayList<>(e.getValue())));
+        for (Map.Entry<String, List<Category>> entry : src.entrySet()) {
+            out.put(entry.getKey(), Collections.unmodifiableList(new ArrayList<>(entry.getValue())));
         }
         return Collections.unmodifiableMap(out);
     }
 
-    private String safeDesc(Resource r) {
+    private String safeDesc(Resource resource) {
         try {
-            return r.getDescription();
+            return resource.getDescription();
         } catch (Exception ignored) {
-            return String.valueOf(r);
+            return String.valueOf(resource);
         }
     }
 

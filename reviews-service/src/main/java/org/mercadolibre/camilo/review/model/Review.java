@@ -8,9 +8,9 @@ import lombok.Value;
 public class Review {
     String id;
     String productId;
-    int rating;         // 1..5
+    int rating;
     String title;
     String text;
-    String createdAt;   // ISO-8601 string (simple en MVP)
-    String author;      // nickname
+    String createdAt;
+    String author;
 }

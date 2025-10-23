@@ -53,6 +53,13 @@ mvn clean install
 ```
 
 Corrige cualquier error (dependencias, tests, errores de sintaxis, etc.)
+En caso de que siga fallando y parezca que es un error de la versión de Maven, fuerza la ejecucion en Java 21 usando el comando:
+
+
+```bash
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+```
+
 
 ### 3. Vuelve a ejecutar el script
 
@@ -68,7 +75,7 @@ Después de corregir el problema, vuelve a ejecutar el script completo desde la 
 
 Si todo está correcto, al final verás los logs de los contenedores iniciando correctamente. Esto incluye:
 
-- `category-service`, `products-service`, `qa-service`, `reviews-service`, `inventory-service` y `api-gateway` corriendo sin errores
+- `category-service`, `products-service`, `qa-service`, `reviews-service`, `inventory-service` y `search-service` corriendo sin errores
 
 Puedes verificar el estado de los contenedores con:
 

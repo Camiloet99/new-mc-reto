@@ -56,7 +56,6 @@ services:
       REVIEWS_BASE_URL: http://reviews:8080
       QA_BASE_URL: http://qa:8080
 
-      # Desactivar proxies heredados y excluir servicios internos de la red de Docker
       HTTP_PROXY: ""
       http_proxy: ""
       HTTPS_PROXY: ""

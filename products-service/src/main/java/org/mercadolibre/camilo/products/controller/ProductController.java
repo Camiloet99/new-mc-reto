@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.mercadolibre.camilo.products.dto.PageResponse;
 import org.mercadolibre.camilo.products.dto.ProductResponse;
 import org.mercadolibre.camilo.products.model.ErrorResponse;
 import org.mercadolibre.camilo.products.service.impl.ProductServiceImpl;
@@ -27,60 +28,44 @@ public class ProductController {
 
     private final ProductServiceImpl service;
 
-    @Operation(
-            summary = "Lista productos aplicando filtros opcionales",
-            description = """
-                    Permite filtrar productos según:
-                    - categoryId: coincidencia exacta con la categoría.
-                    - sellerId: coincidencia exacta con el vendedor.
-                    - q: texto contenido en el título (case-insensitive).
-                    Si no se envían filtros, se listan todos los productos disponibles.
-                    """)
-    @ApiResponse(
-            responseCode = "200",
-            description = "Listado de productos (puede venir vacío)",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class))))
-    @ApiResponse(
-            responseCode = "400",
-            description = "Petición inválida",
+    @Operation(summary = "Lista productos con filtros y paginación opcional", description = """
+            Filtros:
+            - categoryId: coincidencia exacta con la categoría.
+            - sellerId: coincidencia exacta con el vendedor.
+            - q: texto contenido en el título (case-insensitive).
+            Paginación:
+            - page: índice base 0 (opcional).
+            - elements: tamaño de página (opcional, default=5 si llega page sin elements).
+            Si no se envían page ni elements, se devuelven todos los productos en una única página.
+            """)
+    @ApiResponse(responseCode = "200", description = "Página de productos")
+    @ApiResponse(responseCode = "400", description = "Petición inválida",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
-    public ResponseEntity<Flux<ProductResponse>> getAll(
-            @Parameter(description = "Identificador de la categoría (opcional)")
+    public Mono<ResponseEntity<PageResponse<ProductResponse>>> getAll(
             @RequestParam(value = "categoryId", required = false) String categoryId,
-            @Parameter(description = "Identificador del vendedor (opcional)")
             @RequestParam(value = "sellerId", required = false) String sellerId,
-            @Parameter(description = "Texto de búsqueda en el título (opcional)")
-            @RequestParam(value = "q", required = false) String q) {
+            @RequestParam(value = "q", required = false) String q,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "elements", required = false) Integer elements) {
 
-        Flux<ProductResponse> body = service.findAll(categoryId, sellerId, q);
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(body);
+        return service.findAllPaged(categoryId, sellerId, q, page, elements)
+                .map(body -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(body));
     }
 
-    @Operation(
-            summary = "Obtiene un producto por su identificador",
+    @Operation(summary = "Obtiene un producto por su identificador",
             description = "Devuelve los datos completos de un producto existente.")
-    @ApiResponse(
-            responseCode = "200",
-            description = "Producto encontrado",
+    @ApiResponse(responseCode = "200", description = "Producto encontrado",
             content = @Content(schema = @Schema(implementation = ProductResponse.class)))
-    @ApiResponse(
-            responseCode = "404",
-            description = "Producto no encontrado",
+    @ApiResponse(responseCode = "404", description = "Producto no encontrado",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(
-            responseCode = "400",
-            description = "Petición inválida",
+    @ApiResponse(responseCode = "400", description = "Petición inválida",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/{id}")
     public Mono<ResponseEntity<ProductResponse>> get(
@@ -92,25 +77,17 @@ public class ProductController {
                         .body(body));
     }
 
-    @Operation(
-            summary = "Búsqueda fuzzy de productos por título",
-            description = """
-                    Realiza fuzzy search sobre el título de los productos.
-                    - query: texto a buscar (obligatorio, min 2 chars)
-                    - limit: máximo de resultados (opcional, default 20, tope 100)
-                    El resultado viene ordenado por relevancia (score desc).
-                    """)
-    @ApiResponse(
-            responseCode = "200",
-            description = "Listado de productos por relevancia",
+    @Operation(summary = "Búsqueda fuzzy de productos por título", description = """
+            Realiza fuzzy search sobre el título de los productos.
+            - query: texto a buscar (obligatorio, min 2 chars)
+            - limit: máximo de resultados (opcional, default 20, tope 100)
+            El resultado viene ordenado por relevancia (score desc).
+            """)
+    @ApiResponse(responseCode = "200", description = "Listado de productos por relevancia",
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class))))
-    @ApiResponse(
-            responseCode = "400",
-            description = "Petición inválida",
+    @ApiResponse(responseCode = "400", description = "Petición inválida",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/search")
     public ResponseEntity<Flux<ProductResponse>> search(
@@ -125,26 +102,17 @@ public class ProductController {
                 .body(body);
     }
 
-    @Operation(
-            summary = "Autocomplete fuzzy de títulos de productos",
-            description = """
-                    Devuelve una lista de títulos que coinciden por fuzzy search.
-                    - query: texto a buscar (obligatorio, min 2 chars)
-                    - limit: máximo de sugerencias (opcional, default 10, tope 50)
-                    Resultados únicos y ordenados por relevancia (score desc).
-                    """
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "Listado de títulos",
+    @Operation(summary = "Autocomplete fuzzy de títulos de productos", description = """
+            Devuelve una lista de títulos que coinciden por fuzzy search.
+            - query: texto a buscar (obligatorio, min 2 chars)
+            - limit: máximo de sugerencias (opcional, default 10, tope 50)
+            Resultados únicos y ordenados por relevancia (score desc).
+            """)
+    @ApiResponse(responseCode = "200", description = "Listado de títulos",
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))
-    @ApiResponse(
-            responseCode = "400",
-            description = "Petición inválida",
+    @ApiResponse(responseCode = "400", description = "Petición inválida",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(
-            responseCode = "500",
-            description = "Error inesperado",
+    @ApiResponse(responseCode = "500", description = "Error inesperado",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/autocomplete")
     public Mono<ResponseEntity<List<String>>> autocomplete(

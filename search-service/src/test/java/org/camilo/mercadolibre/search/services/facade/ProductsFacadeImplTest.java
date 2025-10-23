@@ -3,6 +3,7 @@ package org.camilo.mercadolibre.search.services.facade;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mercadolibre.camilo.search.config.EnvironmentConfig;
+import org.mercadolibre.camilo.search.dto.PageResponse;
 import org.mercadolibre.camilo.search.exception.ProductsInvalidRequestException;
 import org.mercadolibre.camilo.search.exception.ProductsNotFoundException;
 import org.mercadolibre.camilo.search.exception.ProductsUpstreamFailureException;
@@ -17,6 +18,7 @@ import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 class ProductsFacadeImplTest {
 
@@ -177,5 +179,160 @@ class ProductsFacadeImplTest {
             throw new AssertionError("Expected 2 attempts (1 failure + 1 success), got " + attempts);
         }
     }
-}
 
+    @Test
+    void getAll_success_returnsPageResponse() {
+        server = HttpServer.create()
+                .port(0)
+                .route(r -> r.get("/products", (req, resp) -> resp
+                        .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .sendString(Mono.just("{" +
+                                "\"page\":0,\"size\":1,\"totalItems\":1,\"totalPages\":1,\"hasPrev\":false,\"hasNext\":false," +
+                                "\"items\":[{\"id\":\"P1\",\"title\":\"Prod1\",\"price\":10.50,\"currency\":\"USD\"}]" +
+                                "}"))))
+                .bindNow();
+        String base = "http://localhost:" + server.port();
+        EnvironmentConfig env = buildEnv(base, 0);
+        ProductsFacadeImpl facade = new ProductsFacadeImpl(WebClient.builder().build(), env);
+
+        StepVerifier.create(facade.getAll(null, null, null, null, null))
+                .expectNextMatches(page -> page.getItems().size() == 1 &&
+                        page.getItems().get(0).getId().equals("P1") &&
+                        page.getTotalItems() == 1 && page.getPage() == 0)
+                .verifyComplete();
+    }
+
+    @Test
+    void getAll_success_withQueryParams_buildsUrlProperly() {
+        AtomicReference<String> capturedUri = new AtomicReference<>();
+        server = HttpServer.create()
+                .port(0)
+                .route(r -> r.get("/products", (req, resp) -> {
+                    capturedUri.set(req.uri());
+                    return resp.header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                            .sendString(Mono.just("{" +
+                                    "\"page\":2,\"size\":10,\"totalItems\":25,\"totalPages\":3,\"hasPrev\":true,\"hasNext\":true," +
+                                    "\"items\":[{\"id\":\"P2\",\"title\":\"Prod2\",\"price\":99.99,\"currency\":\"USD\"}]" +
+                                    "}"));
+                }))
+                .bindNow();
+        String base = "http://localhost:" + server.port();
+        EnvironmentConfig env = buildEnv(base, 0);
+        ProductsFacadeImpl facade = new ProductsFacadeImpl(WebClient.builder().build(), env);
+
+        StepVerifier.create(facade.getAll("C1", null, "phone", 2, 10))
+                .expectNextMatches(page -> page.getItems().size() == 1 && page.getPage() == 2 && page.getSize() == 10)
+                .verifyComplete();
+
+        String uri = capturedUri.get();
+        if (uri == null || !uri.contains("categoryId=C1") || !uri.contains("q=phone") || !uri.contains("page=2") || !uri.contains("elements=10") || uri.contains("sellerId=")) {
+            throw new AssertionError("Query params not built as expected. Got: " + uri);
+        }
+    }
+
+    @Test
+    void getAll_invalidRequest_400() {
+        server = HttpServer.create()
+                .port(0)
+                .route(r -> r.get("/products", (req, resp) -> resp
+                        .status(400)
+                        .header("Content-Type", MediaType.TEXT_PLAIN_VALUE)
+                        .sendString(Mono.just("Bad Request"))))
+                .bindNow();
+        String base = "http://localhost:" + server.port();
+        EnvironmentConfig env = buildEnv(base, 1);
+        ProductsFacadeImpl facade = new ProductsFacadeImpl(WebClient.builder().build(), env);
+
+        StepVerifier.create(facade.getAll(null, null, null, null, null))
+                .expectError(ProductsInvalidRequestException.class)
+                .verify();
+    }
+
+    @Test
+    void getAll_upstreamFailure_retriesThenFails() {
+        AtomicInteger counter = new AtomicInteger();
+        server = HttpServer.create()
+                .port(0)
+                .route(r -> r.get("/products", (req, resp) -> {
+                    counter.incrementAndGet();
+                    return resp.status(500)
+                            .header("Content-Type", MediaType.TEXT_PLAIN_VALUE)
+                            .sendString(Mono.just("Internal Error"));
+                }))
+                .bindNow();
+        String base = "http://localhost:" + server.port();
+        int maxRetries = 2;
+        EnvironmentConfig env = buildEnv(base, maxRetries);
+        ProductsFacadeImpl facade = new ProductsFacadeImpl(WebClient.builder().build(), env);
+
+        StepVerifier.create(facade.getAll(null, null, null, null, null))
+                .expectError(ProductsUpstreamFailureException.class)
+                .verify();
+
+        int attempts = counter.get();
+        if (attempts != (1 + maxRetries)) {
+            throw new AssertionError("Expected " + (1 + maxRetries) + " attempts, got " + attempts);
+        }
+    }
+
+    @Test
+    void getAll_upstreamFailure_thenSuccessOnRetry() {
+        AtomicInteger counter = new AtomicInteger();
+        server = HttpServer.create()
+                .port(0)
+                .route(r -> r.get("/products", (req, resp) -> {
+                    int attempt = counter.incrementAndGet();
+                    if (attempt == 1) {
+                        return resp.status(500)
+                                .header("Content-Type", MediaType.TEXT_PLAIN_VALUE)
+                                .sendString(Mono.just("Internal Error"));
+                    }
+                    return resp.header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                            .sendString(Mono.just("{" +
+                                    "\"page\":0,\"size\":1,\"totalItems\":1,\"totalPages\":1,\"hasPrev\":false,\"hasNext\":false," +
+                                    "\"items\":[{\"id\":\"P3\",\"title\":\"Recovered\",\"price\":5.00,\"currency\":\"USD\"}]" +
+                                    "}"));
+                }))
+                .bindNow();
+        String base = "http://localhost:" + server.port();
+        int maxRetries = 3;
+        EnvironmentConfig env = buildEnv(base, maxRetries);
+        ProductsFacadeImpl facade = new ProductsFacadeImpl(WebClient.builder().build(), env);
+
+        StepVerifier.create(facade.getAll(null, null, null, null, null))
+                .expectNextMatches(page -> page.getItems().size() == 1 && page.getItems().get(0).getId().equals("P3"))
+                .verifyComplete();
+
+        int attempts = counter.get();
+        if (attempts != 2) {
+            throw new AssertionError("Expected 2 attempts (1 failure + 1 success), got " + attempts);
+        }
+    }
+
+    @Test
+    void getAll_upstreamFailure_emptyBody() {
+        AtomicInteger counter = new AtomicInteger();
+        server = HttpServer.create()
+                .port(0)
+                .route(r -> r.get("/products", (req, resp) -> {
+                    counter.incrementAndGet();
+                    return resp.status(502)
+                            .header("Content-Type", MediaType.TEXT_PLAIN_VALUE)
+                            .send();
+                }))
+                .bindNow();
+        String base = "http://localhost:" + server.port();
+        int maxRetries = 1;
+        EnvironmentConfig env = buildEnv(base, maxRetries);
+        ProductsFacadeImpl facade = new ProductsFacadeImpl(WebClient.builder().build(), env);
+
+        StepVerifier.create(facade.getAll(null, null, null, null, null))
+                .expectError(ProductsUpstreamFailureException.class)
+                .verify();
+
+        int attempts = counter.get();
+        if (attempts != (1 + maxRetries)) {
+            throw new AssertionError("Expected " + (1 + maxRetries) + " attempts with empty body, got " + attempts);
+        }
+    }
+}
