@@ -1,4 +1,4 @@
-package com.mercadolibre.camilo.exceptions;
+package org.mercadolibre.camilo.exceptions;
 
 public class SellerNotFoundException extends RuntimeException {
     public SellerNotFoundException(String id) {

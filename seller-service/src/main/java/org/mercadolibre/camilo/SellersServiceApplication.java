@@ -1,4 +1,4 @@
-package com.mercadolibre.camilo;
+package org.mercadolibre.camilo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

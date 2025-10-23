@@ -1,4 +1,4 @@
-package com.mercadolibre.camilo.products.model;
+package org.mercadolibre.camilo.products.model;
 
 import lombok.Builder;
 import lombok.Value;

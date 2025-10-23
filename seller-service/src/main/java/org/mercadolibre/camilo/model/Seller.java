@@ -1,4 +1,4 @@
-package com.mercadolibre.camilo.model;
+package org.mercadolibre.camilo.model;
 
 import lombok.*;
 

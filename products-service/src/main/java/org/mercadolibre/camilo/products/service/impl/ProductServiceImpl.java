@@ -1,11 +1,11 @@
-package com.mercadolibre.camilo.products.service.impl;
+package org.mercadolibre.camilo.products.service.impl;
 
-import com.mercadolibre.camilo.products.dto.ProductResponse;
-import com.mercadolibre.camilo.products.exception.InvalidRequestException;
-import com.mercadolibre.camilo.products.exception.ProductNotFoundException;
-import com.mercadolibre.camilo.products.model.Product;
-import com.mercadolibre.camilo.products.repository.impl.ProductRepositoryImpl;
-import com.mercadolibre.camilo.products.service.ProductService;
+import org.mercadolibre.camilo.products.dto.ProductResponse;
+import org.mercadolibre.camilo.products.exception.InvalidRequestException;
+import org.mercadolibre.camilo.products.exception.ProductNotFoundException;
+import org.mercadolibre.camilo.products.model.Product;
+import org.mercadolibre.camilo.products.repository.impl.ProductRepositoryImpl;
+import org.mercadolibre.camilo.products.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

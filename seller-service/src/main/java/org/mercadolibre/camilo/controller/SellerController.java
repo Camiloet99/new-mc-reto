@@ -1,7 +1,15 @@
-package com.mercadolibre.camilo.controller;
+package org.mercadolibre.camilo.controller;
 
-import com.mercadolibre.camilo.dto.SellerResponse;
-import com.mercadolibre.camilo.service.SellerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.mercadolibre.camilo.dto.SellerResponse;
+import org.mercadolibre.camilo.model.ErrorResponse;
+import org.mercadolibre.camilo.service.SellerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Tag(name = "Sellers", description = "Operaciones relacionadas con vendedores")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/sellers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -19,12 +28,20 @@ public class SellerController {
 
     private final SellerService service;
 
-    /**
-     * Devuelve todos los vendedores disponibles.
-     *
-     * @return {@link ResponseEntity} con un {@link Flux} de {@link SellerResponse}
-     * (200 OK; si no hay datos, el flujo vendrá vacío)
-     */
+    @Operation(
+            summary = "Lista todos los vendedores disponibles",
+            description = "Devuelve un flujo (puede ser vacío) con los vendedores registrados."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Listado de vendedores (puede ser vacío)",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = SellerResponse.class)))
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
     @GetMapping
     public ResponseEntity<Flux<SellerResponse>> getAll() {
         Flux<SellerResponse> body = service.findAll();
@@ -33,18 +50,34 @@ public class SellerController {
                 .body(body);
     }
 
-    /**
-     * Obtiene un vendedor por su identificador.
-     *
-     * @param id identificador del vendedor
-     * @return {@link Mono} de {@link ResponseEntity}:
-     * <ul>
-     *   <li>200 OK con el {@link SellerResponse} si existe</li>
-     *   <li>404 Not Found si no existe (mapeado por el handler global)</li>
-     * </ul>
-     */
+    @Operation(
+            summary = "Obtiene un vendedor por ID",
+            description = "Devuelve la información del vendedor si existe."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Vendedor encontrado",
+            content = @Content(schema = @Schema(implementation = SellerResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Vendedor no encontrado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Petición inválida",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<SellerResponse>> get(@PathVariable String id) {
+    public Mono<ResponseEntity<SellerResponse>> get(
+            @Parameter(description = "Identificador del vendedor", required = true)
+            @PathVariable String id) {
         return service.get(id)
                 .map(body -> ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_JSON)

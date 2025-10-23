@@ -1,4 +1,4 @@
-package com.mercadolibre.camilo.exceptions;
+package org.mercadolibre.camilo.exceptions;
 
 public class InvalidRequestException extends RuntimeException {
     public InvalidRequestException(String message) { super(message); }

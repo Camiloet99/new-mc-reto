@@ -1,10 +1,10 @@
-package com.mercadolibre.camilo.service.impl;
+package org.mercadolibre.camilo.service.impl;
 
-import com.mercadolibre.camilo.dto.SellerResponse;
-import com.mercadolibre.camilo.exceptions.InvalidRequestException;
-import com.mercadolibre.camilo.exceptions.SellerNotFoundException;
-import com.mercadolibre.camilo.repository.SellerRepository;
-import com.mercadolibre.camilo.service.SellerService;
+import org.mercadolibre.camilo.dto.SellerResponse;
+import org.mercadolibre.camilo.exceptions.InvalidRequestException;
+import org.mercadolibre.camilo.exceptions.SellerNotFoundException;
+import org.mercadolibre.camilo.repository.SellerRepository;
+import org.mercadolibre.camilo.service.SellerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
-package com.mercadolibre.camilo.repository.impl;
+package org.mercadolibre.camilo.repository.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mercadolibre.camilo.model.Seller;
-import com.mercadolibre.camilo.repository.SellerRepository;
+import org.mercadolibre.camilo.model.Seller;
+import org.mercadolibre.camilo.repository.SellerRepository;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

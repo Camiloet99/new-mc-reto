@@ -1,6 +1,6 @@
-package com.mercadolibre.camilo.products.service;
+package org.mercadolibre.camilo.products.service;
 
-import com.mercadolibre.camilo.products.dto.ProductResponse;
+import org.mercadolibre.camilo.products.dto.ProductResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -1,11 +1,11 @@
-package com.mercadolibre.camilo.service;
+package org.mercadolibre.camilo.service;
 
-import com.mercadolibre.camilo.dto.SellerResponse;
-import com.mercadolibre.camilo.exceptions.InvalidRequestException;
-import com.mercadolibre.camilo.exceptions.SellerNotFoundException;
-import com.mercadolibre.camilo.model.Seller;
-import com.mercadolibre.camilo.repository.SellerRepository;
-import com.mercadolibre.camilo.service.impl.SellerServiceImpl;
+import org.mercadolibre.camilo.dto.SellerResponse;
+import org.mercadolibre.camilo.exceptions.InvalidRequestException;
+import org.mercadolibre.camilo.exceptions.SellerNotFoundException;
+import org.mercadolibre.camilo.model.Seller;
+import org.mercadolibre.camilo.repository.SellerRepository;
+import org.mercadolibre.camilo.service.impl.SellerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

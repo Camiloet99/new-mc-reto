@@ -1,7 +1,15 @@
-package com.mercadolibre.camilo.products.controller;
+package org.mercadolibre.camilo.products.controller;
 
-import com.mercadolibre.camilo.products.dto.ProductResponse;
-import com.mercadolibre.camilo.products.service.impl.ProductServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.mercadolibre.camilo.products.dto.ProductResponse;
+import org.mercadolibre.camilo.products.model.ErrorResponse;
+import org.mercadolibre.camilo.products.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Tag(name = "Products", description = "Operaciones relacionadas con los productos")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -16,23 +25,38 @@ public class ProductController {
 
     private final ProductServiceImpl service;
 
-    /**
-     * Lista productos aplicando filtros opcionales:
-     * <ul>
-     *   <li>{@code categoryId}: coincidencia exacta</li>
-     *   <li>{@code sellerId}: coincidencia exacta</li>
-     *   <li>{@code q}: contiene en el título (case-insensitive)</li>
-     * </ul>
-     *
-     * @param categoryId (opcional) id de categoría
-     * @param sellerId   (opcional) id de vendedor
-     * @param q          (opcional) texto de búsqueda en título
-     * @return {@link ResponseEntity} con un {@link Flux} de {@link ProductResponse}
-     */
+    @Operation(
+            summary = "Lista productos aplicando filtros opcionales",
+            description = """
+                    Permite filtrar productos según:
+                    - categoryId: coincidencia exacta con la categoría.
+                    - sellerId: coincidencia exacta con el vendedor.
+                    - q: texto contenido en el título (case-insensitive).
+                    Si no se envían filtros, se listan todos los productos disponibles.
+                    """
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Listado de productos (puede venir vacío)",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class)))
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Petición inválida",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
     @GetMapping
     public ResponseEntity<Flux<ProductResponse>> getAll(
+            @Parameter(description = "Identificador de la categoría (opcional)")
             @RequestParam(value = "categoryId", required = false) String categoryId,
+            @Parameter(description = "Identificador del vendedor (opcional)")
             @RequestParam(value = "sellerId", required = false) String sellerId,
+            @Parameter(description = "Texto de búsqueda en el título (opcional)")
             @RequestParam(value = "q", required = false) String q) {
 
         Flux<ProductResponse> body = service.findAll(categoryId, sellerId, q);
@@ -41,18 +65,34 @@ public class ProductController {
                 .body(body);
     }
 
-    /**
-     * Obtiene un producto por su identificador.
-     *
-     * @param id identificador del producto
-     * @return {@link Mono} de {@link ResponseEntity}:
-     * <ul>
-     *   <li>200 OK con el {@link ProductResponse} si existe</li>
-     *   <li>404 Not Found si no existe (mapeado por el handler global)</li>
-     * </ul>
-     */
+    @Operation(
+            summary = "Obtiene un producto por su identificador",
+            description = "Devuelve los datos completos de un producto existente."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Producto encontrado",
+            content = @Content(schema = @Schema(implementation = ProductResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Producto no encontrado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Petición inválida",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Error inesperado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<ProductResponse>> get(@PathVariable String id) {
+    public Mono<ResponseEntity<ProductResponse>> get(
+            @Parameter(description = "Identificador único del producto", required = true)
+            @PathVariable String id) {
         return service.get(id)
                 .map(body -> ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_JSON)

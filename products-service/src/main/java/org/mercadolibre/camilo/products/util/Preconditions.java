@@ -1,4 +1,4 @@
-package com.mercadolibre.camilo.products.util;
+package org.mercadolibre.camilo.products.util;
 
 import lombok.experimental.UtilityClass;
 

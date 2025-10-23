@@ -1,10 +1,10 @@
-package com.mercadolibre.camilo.products.repository.impl;
+package org.mercadolibre.camilo.products.repository.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mercadolibre.camilo.products.exception.ProductsDataLoadException;
-import com.mercadolibre.camilo.products.model.Product;
-import com.mercadolibre.camilo.products.repository.ProductRepository;
+import org.mercadolibre.camilo.products.exception.ProductsDataLoadException;
+import org.mercadolibre.camilo.products.model.Product;
+import org.mercadolibre.camilo.products.repository.ProductRepository;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

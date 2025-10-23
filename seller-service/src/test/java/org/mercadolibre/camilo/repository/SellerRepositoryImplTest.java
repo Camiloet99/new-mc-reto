@@ -1,9 +1,9 @@
-package com.mercadolibre.camilo.repository;
+package org.mercadolibre.camilo.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mercadolibre.camilo.model.Seller;
-import com.mercadolibre.camilo.repository.impl.SellerRepositoryImpl;
+import org.mercadolibre.camilo.model.Seller;
+import org.mercadolibre.camilo.repository.impl.SellerRepositoryImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

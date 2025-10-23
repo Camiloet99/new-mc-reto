@@ -1,12 +1,11 @@
 package org.mercadolibre.camilo.products.service;
 
-import com.mercadolibre.camilo.products.dto.ProductResponse;
-import com.mercadolibre.camilo.products.exception.InvalidRequestException;
-import com.mercadolibre.camilo.products.exception.ProductNotFoundException;
-import com.mercadolibre.camilo.products.model.Product;
-import com.mercadolibre.camilo.products.repository.impl.ProductRepositoryImpl;
-import com.mercadolibre.camilo.products.service.ProductService;
-import com.mercadolibre.camilo.products.service.impl.ProductServiceImpl;
+import org.mercadolibre.camilo.products.dto.ProductResponse;
+import org.mercadolibre.camilo.products.exception.InvalidRequestException;
+import org.mercadolibre.camilo.products.exception.ProductNotFoundException;
+import org.mercadolibre.camilo.products.model.Product;
+import org.mercadolibre.camilo.products.repository.impl.ProductRepositoryImpl;
+import org.mercadolibre.camilo.products.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;

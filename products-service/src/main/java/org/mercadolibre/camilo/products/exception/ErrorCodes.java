@@ -1,4 +1,4 @@
-package com.mercadolibre.camilo.products.exception;
+package org.mercadolibre.camilo.products.exception;
 
 import lombok.experimental.UtilityClass;
 

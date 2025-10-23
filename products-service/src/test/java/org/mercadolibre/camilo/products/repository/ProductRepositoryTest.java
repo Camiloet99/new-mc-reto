@@ -1,9 +1,9 @@
 package org.mercadolibre.camilo.products.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mercadolibre.camilo.products.exception.ProductsDataLoadException;
-import com.mercadolibre.camilo.products.model.Product;
-import com.mercadolibre.camilo.products.repository.impl.ProductRepositoryImpl;
+import org.mercadolibre.camilo.products.exception.ProductsDataLoadException;
+import org.mercadolibre.camilo.products.model.Product;
+import org.mercadolibre.camilo.products.repository.impl.ProductRepositoryImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

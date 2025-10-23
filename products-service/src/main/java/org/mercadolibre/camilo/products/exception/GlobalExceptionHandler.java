@@ -1,6 +1,6 @@
-package com.mercadolibre.camilo.products.exception;
+package org.mercadolibre.camilo.products.exception;
 
-import com.mercadolibre.camilo.products.model.ErrorResponse;
+import org.mercadolibre.camilo.products.model.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

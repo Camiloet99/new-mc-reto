@@ -1,6 +1,6 @@
-package com.mercadolibre.camilo.repository;
+package org.mercadolibre.camilo.repository;
 
-import com.mercadolibre.camilo.model.Seller;
+import org.mercadolibre.camilo.model.Seller;
 
 import java.util.Collection;
 import java.util.Optional;
