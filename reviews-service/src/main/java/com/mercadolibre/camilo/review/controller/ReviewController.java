@@ -3,7 +3,6 @@ package com.mercadolibre.camilo.review.controller;
 import com.mercadolibre.camilo.review.dto.ReviewResponse;
 import com.mercadolibre.camilo.review.dto.ReviewSummaryResponse;
 import com.mercadolibre.camilo.review.service.ReviewService;
-import com.mercadolibre.camilo.review.service.impl.ReviewServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
